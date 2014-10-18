@@ -1,0 +1,7 @@
+#!/bin/sh
+
+cd "$(dirname "$0")"
+
+. "$PWD"/settings
+
+docker build -t "$NANO_IMAGE" .

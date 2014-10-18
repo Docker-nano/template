@@ -1,0 +1,72 @@
+language: generic
+
+env:
+  global: ROOTFS="$HOME/buildroot/output/images/rootfs.tar.xz"
+
+branches:
+  except: /^product/
+
+install:
+  - sudo ./.travis.bash
+  - sudo apt-get install -y pcregrep
+
+script:
+  - |
+    (cd ~/buildroot && sudo make defconfig BR2_DEFCONFIG=.config && sudo make 2>~/error.log) | tee ~/build.log |
+    # Filter log to avoid tripping Travis log limits (10K lines/4MB) or stalling due to timeout (10 minutes).
+    # We use pcregrep instead of grep -P because grep treats newlines in patterns as multiple patterns.
+    pcregrep -v '(?x)
+      ^(
+        # General spam.
+        Creating\ directory|Listing|Compiling|copying|changing\ mode|libtool|installing|patching
+
+        # Configure spam.
+        |[Cc]hecking|configure|config.status
+
+        # Make spam.
+        |[Mm]aking|\s*(cp|rm|mv|ln|mkdir|chmod|echo|touch|sed|-e|/usr/bin/install)|install-info
+      )\b
+      |^make\[.\]:
+
+      # Script fragments.
+      |^\s+[{}<>|]\s
+    '
+
+  # Test rootfs readable.
+  - '[[ -r $ROOTFS ]]'
+
+  # Test rootfs begins with root entry.
+  - '[[ $(tar tf "$ROOTFS" | head -1) = ./ ]]'
+
+  # Test rootfs contains <Product> binary.
+  - tar tf "$ROOTFS" | grep -Fx ./usr/bin/<binary>
+
+after_failure:
+  - tail -30 ~/error.log
+  - tail -30 ~/build.log
+
+after_success:
+  # Decrypt Git credentials file.
+  - openssl aes-256-cbc -K $encrypted_<hash>_key -iv $encrypted_<hash>_iv
+    -in .git-credentials.enc -out ~/.git-credentials -d
+
+  # Work in new directory.
+  - mkdir -v newproduct && cd $_
+
+  # Initialize and configure Git.
+  - |
+    git init
+    git config user.name Travis
+    git config user.email bilge+travis@scriptfusion.com
+    git config credential.helper store
+    git remote add origin https://github.com/"$TRAVIS_REPO_SLUG"
+
+  # Pull the most recent commit.
+  - git pull --depth=1 origin "${branch=product/"$TRAVIS_BRANCH"}"
+
+  # Copy rootfs and product skeleton.
+  - cp -fl "$ROOTFS" ../product/* .
+
+  # Push modified product files.
+  - git add .;
+    git commit -m "Built product from $TRAVIS_COMMIT." && git push origin HEAD:"$branch"

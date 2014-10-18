@@ -1,0 +1,7 @@
+#!/bin/sh
+
+cd "$(dirname "$0")"
+
+. "$PWD"/settings
+
+docker cp "$NANO_CONTAINER":/root/buildroot/output/images/rootfs.tar.xz product
