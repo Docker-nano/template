@@ -13,8 +13,8 @@ Usage
 
 Try one of the following.
 
-* Run `docker run -it nano/<product>`
-* Add `FROM nano/<product>` to your Dockerfile.
+* Run `docker run -it nano/<product>:latest`
+* Add `FROM nano/<product>:latest` to your Dockerfile.
 
   [Build]: http://travis-ci.org/Docker-nano/<Product>
   [Build image]: http://img.shields.io/travis/Docker-nano/<Product>.svg "Build status"
