@@ -3,9 +3,6 @@ language: generic
 env:
   global: ROOTFS="$HOME/buildroot/output/images/rootfs.tar.xz"
 
-branches:
-  except: /^product/
-
 install:
   - sudo ./.travis.bash
   - sudo apt-get install -y pcregrep
