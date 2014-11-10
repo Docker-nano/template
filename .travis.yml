@@ -44,8 +44,14 @@ after_failure:
 
 after_success:
   # Decrypt Git credentials file.
-  - openssl aes-256-cbc -K $encrypted_<hash>_key -iv $encrypted_<hash>_iv
-    -in .git-credentials.enc -out ~/.git-credentials -d
+  - |
+    (
+      for var in "${!encrypted_@}"; do
+        [[ $var = *_key ]] && key=${!var}
+        [[ $var = *_iv ]] && iv=${!var}
+      done
+      openssl aes-256-cbc -K "$key" -iv "$iv" -in .git-credentials.enc -out ~/.git-credentials -d
+    )
 
   # Work in new directory.
   - mkdir -v newproduct && cd $_
