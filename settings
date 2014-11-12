@@ -4,4 +4,4 @@
 NANO_IMAGE=dockernano/<product>
 
 # Name of local Docker container.
-NANO_CONTAINER=<Product>
+NANO_CONTAINER=Buildroot-<Product>

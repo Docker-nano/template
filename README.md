@@ -41,9 +41,9 @@ changes have been made.
 
  1. Copy the file – `cp -bf file{,}`.
  2. Edit the file – `editor file`.
- 3. Create the patch – `diff -u file~ file > file.patch`.
+ 3. Create the patch – `diff -u file{~,} > ~/buildroot/patches/my.patch`. Ensure the patch name accurately describes
+    the purpose of the patch.
  4. Edit the patch header. A typical patch header may look like the following.
-
     ```
     --- file~    1970-01-01 00:00:00.123456789 +0000
     +++ file     1970-01-01 00:00:00.123456789 +0000
@@ -60,10 +60,9 @@ changes have been made.
     @@ -1,0 +1,1 @@
     +foo
     ```
-
- 5. Copy your patches to `in/patches` on the host.
+ 5. Copy patches back to the host – `./nano pull patches`.
  6. Uncomment the patching directives in the `Dockerfile` template.
- 7. Build your container and ensure the patches are applied correctly.
+ 7. Rebuild your container and ensure the patches are applied correctly.
 
 Modifying the rootfs
 --------------------

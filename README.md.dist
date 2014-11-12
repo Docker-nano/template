@@ -12,12 +12,12 @@ Building
 
 To build the rootfs follow these steps.
 
-1. `./build\ image` – Build the Docker image locally.
-2. `./run\ container` – Removes any previous container started by this script and runs a new interactive container.
+1. `./nano build` – Build the Docker image locally.
+2. `./nano run` – Removes any previous container started by this script and runs a new interactive container.
 3. `buildroot-configure` – Configure Buildroot to install desired packages.
 4. `buildroot` – Build new rootfs.
 5. [Ctrl]+[D] – Exit container.
-6. `./pull\ rootfs` – Copies the compressed rootfs tarball from the container to the *product* directory.
+6. `./nano pull rootfs` – Copies the compressed rootfs tarball from the container to the *product* directory.
 
 Creating a Docker image
 -----------------------
