@@ -11,7 +11,7 @@ Usage
 Using the template is as simple as cloning this source and inserting your product's name into a few files, replacing
 the &lt;product> placeholders, as outlined in the following steps.
 
- 1. Clone this repository (forking is for updating the template itself).
+ 1. Clone (`git clone --recursive`) this repository (forking is for updating the template itself).
  2. Update `settings` with the name of your product.
     * `NANO_IMAGE` – The Buildroot image tag as listed in `docker images`.
     * `NANO_CONTAINER` – The Buildroot container name as listed in `docker ps`.
