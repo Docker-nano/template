@@ -67,8 +67,8 @@ changes have been made.
 Modifying the rootfs
 --------------------
 
-If you wish to add to or overwrite files in the rootfs image simply add those files to `in/rootfs_overlay` and add
-`COPY in/rootfs_overlay /root/buildroot/rootfs_overlay` to your `Dockerfile`. Buildroot is already configured to pick
+If you wish to add to or overwrite files in the rootfs image simply add those files to `in/rootfs_overlay` and uncomment
+`COPY in/rootfs_overlay /root/buildroot/rootfs_overlay` in your `Dockerfile`. Buildroot is already configured to pick
 up files in this directory and merge them into the rootfs using the directory structure you provide in the overlay
 directory.
 
